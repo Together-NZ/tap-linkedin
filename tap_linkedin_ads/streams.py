@@ -8,7 +8,7 @@ from singer import metrics, metadata, utils
 from singer import Transformer, should_sync_field, UNIX_MILLISECONDS_INTEGER_DATETIME_PARSING
 from singer.utils import strptime_to_utc, strftime
 from tap_linkedin_ads.transform import transform_json, snake_case_to_camel_case
-
+import logging
 LOGGER = singer.get_logger()
 
 # Below fields are a list of foreign keys(primary key of a parent) and replication keys that API can not accept in the parameters.
@@ -262,11 +262,14 @@ class LinkedInAds:
                     # Check replication key value if it is available in the record
                     if bookmark_field and (bookmark_field in transformed_record):
                         # Reset max_bookmark_value to new value if higher
-                        if max_bookmark_value is None or strptime_to_utc(transformed_record[bookmark_field]) > strptime_to_utc(max_bookmark_value):
-                            max_bookmark_value = transformed_record[bookmark_field]
+                        if max_bookmark_value is None or strptime_to_utc(transformed_record.get(bookmark_field)) > strptime_to_utc(max_bookmark_value):
+                            LOGGER.info(type(transformed_record))
+                            LOGGER.info(transformed_record)
+                            LOGGER.info('New max bookmark value: %s', transformed_record.get(bookmark_field))
+                            max_bookmark_value = transformed_record.get(bookmark_field)
 
                         last_dttm = strptime_to_utc(last_datetime)
-                        bookmark_dttm = strptime_to_utc(transformed_record[bookmark_field])
+                        bookmark_dttm = strptime_to_utc(transformed_record.get(bookmark_field))
                         # Keep only records whose bookmark is after the last_datetime
                         if bookmark_dttm >= last_dttm:
                             self.write_record(transformed_record, time_extracted=time_extracted)
