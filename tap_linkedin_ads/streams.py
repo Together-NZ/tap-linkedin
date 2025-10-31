@@ -262,14 +262,17 @@ class LinkedInAds:
                     # Check replication key value if it is available in the record
                     if bookmark_field and (bookmark_field in transformed_record):
                         # Reset max_bookmark_value to new value if higher
-                        if max_bookmark_value is None or strptime_to_utc(transformed_record.get(bookmark_field)) > strptime_to_utc(max_bookmark_value):
+                        if max_bookmark_value is None or strptime_to_utc(str(transformed_record.get(bookmark_field))) > strptime_to_utc(str(max_bookmark_value)):
                             LOGGER.info(type(transformed_record))
-                            LOGGER.info(transformed_record)
+                            
                             LOGGER.info('New max bookmark value: %s', transformed_record.get(bookmark_field))
+                            LOGGER.info('Bookmark value type: %s',type(transformed_record.get(bookmark_field)))
+                            LOGGER.info('Max bookmark value type: %s',type(max_bookmark_value))
+                            LOGGER.info('Last datetime type: %s',type(last_datetime))
                             max_bookmark_value = transformed_record.get(bookmark_field)
-
-                        last_dttm = strptime_to_utc(last_datetime)
-                        bookmark_dttm = strptime_to_utc(transformed_record.get(bookmark_field))
+                            
+                        last_dttm = strptime_to_utc(str(last_datetime))
+                        bookmark_dttm = strptime_to_utc(str(transformed_record.get(bookmark_field)))
                         # Keep only records whose bookmark is after the last_datetime
                         if bookmark_dttm >= last_dttm:
                             self.write_record(transformed_record, time_extracted=time_extracted)
@@ -446,9 +449,9 @@ class LinkedInAds:
                                     parent_id=parent_id,
                                     account_list=[acct_id])
 
-                            child_batch_bookmark_dttm = strptime_to_utc(child_batch_bookmark_value)
+                            child_batch_bookmark_dttm = strptime_to_utc(str(child_batch_bookmark_value))
                             child_max_bookmark = child_max_bookmarks.get(child_stream_name)
-                            child_max_bookmark_dttm = strptime_to_utc(child_max_bookmark)
+                            child_max_bookmark_dttm = strptime_to_utc(str(child_max_bookmark))
                             if child_batch_bookmark_dttm > child_max_bookmark_dttm:
                                 # Update bookmark for child stream.
                                 child_max_bookmarks[child_stream_name] = strftime(child_batch_bookmark_dttm)
