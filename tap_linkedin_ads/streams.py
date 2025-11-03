@@ -490,6 +490,8 @@ class LinkedInAds:
 
         bookmark_field = next(iter(self.replication_keys))
 
+        if not last_datetime or str(last_datetime)== "{}":
+            last_datetime=datetime.date.today().strftime("%Y-%m-%d")
         max_bookmark_value = last_datetime
         last_datetime_dt = strptime_to_utc(str(last_datetime)) - timedelta(days=7)
 
