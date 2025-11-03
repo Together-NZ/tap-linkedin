@@ -454,7 +454,6 @@ class LinkedInAds:
                             child_max_bookmark = child_max_bookmarks.get(child_stream_name)
                             if not child_max_bookmark or child_max_bookmark == "{}":
                                 child_max_bookmark=datetime.now().strftime('%Y-%m-%d')
-                            self.logger.info('child_max_bookmark: %s', child_max_bookmark)
                             child_max_bookmark_dttm = strptime_to_utc(str(child_max_bookmark))
                             if child_batch_bookmark_dttm > child_max_bookmark_dttm:
                                 # Update bookmark for child stream.
