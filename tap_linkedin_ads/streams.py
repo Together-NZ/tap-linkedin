@@ -2,7 +2,7 @@ import urllib.parse
 import re
 import copy
 import datetime
-from datetime import timedelta
+from datetime import timedelta,datetime
 import singer
 from singer import metrics, metadata, utils
 from singer import Transformer, should_sync_field, UNIX_MILLISECONDS_INTEGER_DATETIME_PARSING
