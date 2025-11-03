@@ -448,9 +448,12 @@ class LinkedInAds:
                                     date_window_size=date_window_size,
                                     parent_id=parent_id,
                                     account_list=[acct_id])
-
+                            if not child_batch_bookmark_value or child_batch_bookmark_value == "{}":
+                                child_batch_bookmark_value = datetime.now().strftime('%Y-%m-%d')
                             child_batch_bookmark_dttm = strptime_to_utc(str(child_batch_bookmark_value))
                             child_max_bookmark = child_max_bookmarks.get(child_stream_name)
+                            if child_max_bookmark is None or child_max_bookmark == "{}":
+                                child_max_bookmark=datetime.now().strftime('%Y-%m-%d')
                             child_max_bookmark_dttm = strptime_to_utc(str(child_max_bookmark))
                             if child_batch_bookmark_dttm > child_max_bookmark_dttm:
                                 # Update bookmark for child stream.
