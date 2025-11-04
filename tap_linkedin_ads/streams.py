@@ -224,11 +224,14 @@ class LinkedInAds:
         """
         if (state is None) or ('bookmarks' not in state):
             return default
-        return (
-            state
-            .get('bookmarks', {})
-            .get(self.tap_stream_id, default)
-        )
+        if (state.get('bookmarks', {}).get(self.tap_stream_id, default)) =="{}":
+            return default
+        else:
+            return (
+                state
+                .get('bookmarks', {})
+                .get(self.tap_stream_id, default)
+            )
 
     # pylint: disable=too-many-arguments,too-many-locals
     def process_records(self,
