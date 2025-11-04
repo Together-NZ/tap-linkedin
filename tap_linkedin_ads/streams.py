@@ -2,7 +2,7 @@ import urllib.parse
 import re
 import copy
 import datetime
-from datetime import timedelta,datetime
+from datetime import timedelta
 import singer
 from singer import metrics, metadata, utils
 from singer import Transformer, should_sync_field, UNIX_MILLISECONDS_INTEGER_DATETIME_PARSING
@@ -449,11 +449,11 @@ class LinkedInAds:
                                     parent_id=parent_id,
                                     account_list=[acct_id])
                             if not child_batch_bookmark_value or child_batch_bookmark_value == "{}":
-                                child_batch_bookmark_value = datetime.now().strftime('%Y-%m-%d')
+                                child_batch_bookmark_value = datetime.datetime.now().strftime('%Y-%m-%d')
                             child_batch_bookmark_dttm = strptime_to_utc(str(child_batch_bookmark_value))
                             child_max_bookmark = child_max_bookmarks.get(child_stream_name)
                             if not child_max_bookmark or child_max_bookmark == "{}":
-                                child_max_bookmark=datetime.now().strftime('%Y-%m-%d')
+                                child_max_bookmark=datetime.datetime.now().strftime('%Y-%m-%d')
                             child_max_bookmark_dttm = strptime_to_utc(str(child_max_bookmark))
                             if child_batch_bookmark_dttm > child_max_bookmark_dttm:
                                 # Update bookmark for child stream.
