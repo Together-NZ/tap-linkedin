@@ -301,6 +301,8 @@ class LinkedInAds:
         # Get the latest bookmark for the stream and set the last_datetime
         last_datetime = self.get_bookmark(state, start_date)
         max_bookmark_value = last_datetime
+        if max_bookmark_value is None or max_bookmark_value == "{}":
+            max_bookmark_value = start_date
         LOGGER.info('%s: bookmark last_datetime = %s', self.tap_stream_id, max_bookmark_value)
 
         bookmark_field = next(iter(self.replication_keys))
