@@ -675,6 +675,7 @@ class CampaignGroups(LinkedInAds):
     account_filter = "search_account_values_param"
     path = "adCampaignGroups"
     data_key = "elements"
+    children = ["campaigns"]
     params = {
         "q": "search"
     }
